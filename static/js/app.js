@@ -40,22 +40,26 @@ function buildMetadata(sample) {
     // Make an API call to gather all data and then reduce to matching the sample selected
     //TODO: 
   
-//   d3.json(URL).then((sample) =>{
-//     var panel = d3.select("#sample-metadata");
-//     panel.html("");
-//     console.log(data);
+  d3.json(URL).then((sample) =>{
+    var panel = d3.select("#sample-metadata");
+    panel.html("");
+    console.log(data);
       
-//     Object.entries(sample).forEach(([key, value]) => {
-//       var paragraph = panel.append("p");
-//       paragraph.text(`${key} : ${value}`);
-//     });
-//   });
+    Object.entries(sample).forEach(([key, value]) => {
+      var paragraph = panel.append("p");
+      paragraph.text(`${key} : ${value}`);
+    });
+  });
 
 function init() {
+  sample = [{
+    x: [1,2,3],
+    y: [2,4,6]
+  }];
     
 //     // Grab a reference to the dropdown select element
   var selector = d3.select("#selDataset");
-    
+  Plotly.newPlot("plot", data);
     // Use the list of sample names to populate the select options
   d3.json("samples.json").then((data) => {
     var sampleNames = data.names;
