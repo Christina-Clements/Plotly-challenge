@@ -1,3 +1,4 @@
+var url = `http://robdunnlab.com/projects/belly-button-biodiversity/`;
 function handleSubmit() {
     // Make an API call to gather all data and then reduce to matching the sample selected
     //TODO: 
@@ -8,7 +9,6 @@ function handleSubmit() {
   buildMetaData(sample);
 }
 function buildMetadata(sample) { 
-  var url = `http://robdunnlab.com/projects/belly-button-biodiversity/`;
   d3.json(url).then((sample) => {
     var name = sample.names;
     var otu_ids = sample.metadata.id;
