@@ -1,3 +1,9 @@
+function init() {
+  sample = [{
+    x: [1,2,3],
+    y: [2,4,6]}];
+  Plotly.newPlot("plot", data);
+}
 var url = `http://robdunnlab.com/projects/belly-button-biodiversity/`;
 function handleSubmit() {
     // Make an API call to gather all data and then reduce to matching the sample selected
@@ -50,12 +56,6 @@ function buildMetadata(sample) {
       paragraph.text(`${key} : ${value}`);
     });
   });
-
-function init() {
-  sample = [{
-    x: [1,2,3],
-    y: [2,4,6]
-  }];
     
 //     // Grab a reference to the dropdown select element
   var selector = d3.select("#selDataset");
