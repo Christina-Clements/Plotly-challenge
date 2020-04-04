@@ -24,14 +24,25 @@ function init() {
       buildMetadata(firstSample);
     });
   });
+  d3.json("samples.json").then((sampleNames) => {
+    sampleNames.forEach((sample) => {
+      selector
+        .append("option")
+        .text(sample)
+        .property("value", sample);
+    });
+  });
 }
-
+function optionChanged(newSample) {
+  buildCharts(newSample);
+  buildMetadata(newSample);
+}
 var url = "samples.json";
 function buildMetadata(sample) {
   d3.json(url).then((data) => {
     console.log(data);
     var metadata = data.metadata;
-    var resultArray = metadata.filter(metadataSample => metadataSample.id == sample);
+    var resultArray = metadata.filter(metadataSample => metadataSample.id.toString() == sample);
     var result = resultArray[0];
     var panel = d3.select("#sample-metadata");
     panel.html("");
@@ -43,7 +54,7 @@ function buildMetadata(sample) {
   });
 }
 
-function buildCharts(sample) {
+function buildCharts(data) {
   d3.json(url).then((data) =>{
     console.log(data)
     var samples = data.samples;
@@ -58,12 +69,31 @@ function buildCharts(sample) {
       text: otu_labels,
       name: "OTU IDs",
       mode: "markers"
-      };
+      marker: {
+        color: otu_ids,
+        size: sample_values,
+        text: otu_labels
+      },
+      hovertext: otu_labels,
+      type: "scatter"
+    };
     var bubbleData = [bubbleTrace];
     var layout ={
       xaxis: {title: "OTU ID"}
       };
     Plotly.newPlot("bubble", bubbleData, layout);
+    
+
+    d3.json("samples.json").then(function(data) {
+      var ylabels = data.sample_values
+      var xlabels = data.otu_ids
+      var data = [{
+        values: ylabels,
+        labels: xlabels,
+        type: "bar"
+      }];
+    Plotly.newPlot('bar', data);
+    });
   });
 };
   
