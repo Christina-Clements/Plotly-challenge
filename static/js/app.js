@@ -68,13 +68,8 @@ function buildCharts(data) {
       y: sample_values,
       text: otu_labels,
       name: "OTU IDs",
-      mode: "markers"
-      marker: {
-        color: otu_ids,
-        size: sample_values,
-        text: otu_labels
-      },
-      hovertext: otu_labels,
+      mode: "markers",
+      text: otu_labels,
       type: "scatter"
     };
     var bubbleData = [bubbleTrace];
