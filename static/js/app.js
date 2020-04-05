@@ -24,25 +24,15 @@ function init() {
       buildMetadata(firstSample);
     });
   });
-  d3.json("samples.json").then((sampleNames) => {
-    sampleNames.forEach((sample) => {
-      selector
-        .append("option")
-        .text(sample)
-        .property("value", sample);
-    });
-  });
+  
 }
-function optionChanged(newSample) {
-  buildCharts(newSample);
-  buildMetadata(newSample);
-}
+
 var url = "samples.json";
 function buildMetadata(sample) {
   d3.json(url).then((data) => {
     console.log(data);
     var metadata = data.metadata;
-    var resultArray = metadata.filter(metadataSample => metadataSample.id.toString() == sample);
+    var resultArray = metadata.filter(metadataSample => metadataSample.id== sample);
     var result = resultArray[0];
     var panel = d3.select("#sample-metadata");
     panel.html("");
@@ -54,49 +44,31 @@ function buildMetadata(sample) {
   });
 }
 
-function buildCharts(data) {
+function buildCharts(sample) {
   d3.json(url).then((data) =>{
     console.log(data)
     var samples = data.samples;
-    var resultArray = samples.filter(samplesSample => samplesSample.id == sample);
+    var resultArray = samples.filter(samplesSample => samplesSample.id ==sample);
     var otuSample = resultArray[0];
     var otu_ids = otuSample.otu_ids;
     var sample_values = otuSample.sample_values;
     var otu_labels = otuSample.otu_labels;
     var bubbleTrace = {
-      x: otu_ids, 
-      y: sample_values,
+      x:otu_ids,
+      y:sample_values,
       text: otu_labels,
       name: "OTU IDs",
-      mode: "markers",
-      text: otu_labels,
-      type: "scatter"
+      mode: "markers"
     };
-    var bubbleData = [bubbleTrace];
-    var layout ={
+    var bubbleData= [bubbleTrace];
+    var layout = {
       xaxis: {title: "OTU ID"}
-      };
+    };
     Plotly.newPlot("bubble", bubbleData, layout);
-    
-
-    d3.json("samples.json").then(function(data) {
-      var ylabels = data.sample_values
-      var xlabels = data.otu_ids
-      var data = [{
-        values: ylabels,
-        labels: xlabels,
-        type: "bar"
-      }];
-    Plotly.newPlot('bar', data);
-    });
   });
 };
-  
 function optionChanged(newSample) {
-    // Fetch new data each time a new sample is selected
   buildCharts(newSample);
   buildMetadata(newSample);
 };
-  
-  // Initialize the dashboard
-init();
+init()
